@@ -1,9 +1,11 @@
 # 参考链接
 https://hansimov.gitbook.io/csapp/labs/bomb-lab/writeup#1.-jie-shao
 
-# 使用到的工具
-
+# 使用到的工具（windows）
+- 工具清单链接：https://zhuanlan.zhihu.com/p/458788706
 - ODA，全平台，在线反汇编工具。https://onlinedisassembler.com/odaweb/S3t8BvPF
+- VS Code x86 and x86_64 Assembly插件
+- ollydbg，windows调试器，https://www.ollydbg.de/
 
 
 # 1. 介绍
