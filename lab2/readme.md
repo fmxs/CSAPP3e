@@ -5,8 +5,10 @@ https://hansimov.gitbook.io/csapp/labs/bomb-lab/writeup#1.-jie-shao
 
 - ODA，全平台，在线反汇编工具。https://onlinedisassembler.com/odaweb/S3t8BvPF
 
-Harry Bovik (bovik@cs.cmu.edu) 是本作业的负责人。
+
 # 1. 介绍
+
+Harry Bovik (bovik@cs.cmu.edu) 是本作业的负责人。
 
 邪恶的邪恶博士在我们的班级机器上放置了大量的“二进制炸弹”。二进制炸弹是由一系列阶段组成的程序。每个阶段都要求你在 stdin 上键入一个特定的字符串。如果你输入了正确的字符串，那么这个阶段就被拆除，炸弹进入下一个阶段。否则炸弹会爆炸，并打印出 “BOOM!!!”，然后终止。当每一个阶段都被拆除时，炸弹才算拆除。
 
