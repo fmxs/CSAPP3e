@@ -1,6 +1,10 @@
 # 参考链接
 https://hansimov.gitbook.io/csapp/labs/bomb-lab/writeup#1.-jie-shao
 
+# 使用到的工具
+
+- ODA，全平台，在线反汇编工具。https://onlinedisassembler.com/odaweb/S3t8BvPF
+
 Harry Bovik (bovik@cs.cmu.edu) 是本作业的负责人。
 # 1. 介绍
 
