@@ -1,6 +1,12 @@
 # 参考链接
 https://hansimov.gitbook.io/csapp/labs/bomb-lab/writeup#1.-jie-shao
+
 https://zhuanlan.zhihu.com/p/458788706
+
+https://www.viseator.com/2017/06/21/CS_APP_BombLab/
+
+https://wdxtub.com/csapp/thick-csapp-lab-2/2016/04/16/
+
 
 # 使用到的工具
 - ODA，可以反汇编文件。https://onlinedisassembler.com/odaweb/S3t8BvPF
@@ -13,12 +19,7 @@ https://zhuanlan.zhihu.com/p/458788706
 # 文件说明
 - bomb.asm
 
-这是将文件夹中的bomb反汇编后得到的文件，反汇编工具是ODA，地址在上面一节写着。
+这是将自学资料文件夹中的bomb文件反汇编后得到的文件，反汇编工具是ODA，官网地址在[上面一节写着。](https://onlinedisassembler.com/odaweb/S3t8BvPF)
 
-该文件对6个炸弹函数给出了详细的注释。
-
-参考链接包括：
-https://www.viseator.com/2017/06/21/CS_APP_BombLab/
-
-https://wdxtub.com/csapp/thick-csapp-lab-2/2016/04/16/
+该文件中的注释是本人写的，对6个炸弹函数给出了详细的介绍。
 
