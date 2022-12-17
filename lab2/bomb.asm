@@ -2483,31 +2483,43 @@
                            # 结束函数的执行
                            .text:00400efb c3                               retq   
 
-.text:00400efc <phase_2>: # 第2个炸弹的函数 不太懂                                 目标操作数, 源操作数
+.text:00400efc <phase_2>: # 第2个炸弹的函数                                        目标操作数, 源操作数
                            .text:00400efc 55                               push   %rbp
                            .text:00400efd 53                               push   %rbx
-                           .text:00400efe 48 83 ec 28                      sub    $0x28,%rsp  ; rsp -= 40
-                           .text:00400f02 48 89 e6                         mov    %rsp,%rsi   ; rsi = rsp
+                           .text:00400efe 48 83 ec 28                      sub    $0x28,%rsp 
+                           .text:00400f02 48 89 e6                         mov    %rsp,%rsi  
+                           # 这段代码主要用于读取六个数字，然后判断第一个数字是否为 1
                            .text:00400f05 e8 52 05 00 00                   callq  0x0040145c <read_six_numbers>
                            .text:00400f0a 83 3c 24 01                      cmpl   $0x1,(%rsp) ; 将rsp中的内容和[数字1]比较
-                           .text:00400f0e 74 20                            je     0x00400f30  ; 如果为0，就跳转
+                           # 如果是，则跳转到 0x00400f30 处执行；
+                           .text:00400f0e 74 20                            je     0x00400f30  ; 如果返回值为0，说明两数相等
+                           # 如果不是，则调用 explode_bomb 函数。
                            .text:00400f10 e8 25 05 00 00                   callq  0x0040143a <explode_bomb>
                            .text:00400f15 eb 19                            jmp    0x00400f30
+                           # 将 rbp 中的值乘 2 并与 rbx 中的值进行比较。
                            .text:00400f17 8b 43 fc                         mov    -0x4(%rbx),%eax; 将[rbx减4这个地址(==rbp)]中的值，移动给eax
                            .text:00400f1a 01 c0                            add    %eax,%eax; 将eax中的值乘2
                            .text:00400f1c 39 03                            cmp    %eax,(%rbx); 比较eax和rbx中的值，如果一样就不引爆炸弹
+                           # 如果相同，就跳转到 0x00400f25 处；
                            .text:00400f1e 74 05                            je     0x00400f25
+                           # 如果不同，就调用 explode_bomb 函数。
                            .text:00400f20 e8 15 05 00 00                   callq  0x0040143a <explode_bomb>
+                           # 将 rbx 加 4，并将 rbx 与 rbp 进行比较。
                            .text:00400f25 48 83 c3 04                      add    $0x4,%rbx ; 将rbx中的值加4
-                           .text:00400f29 48 39 eb                         cmp    %rbp,%rbx ; 比较rbx
+                           .text:00400f29 48 39 eb                         cmp    %rbp,%rbx ; 比较rbx和rbp
+                           # 如果不同，就跳转回 0x00400f17 处。
                            .text:00400f2c 75 e9                            jne    0x00400f17
+                           # 如果相同，就跳转到 0x00400f3c 处
                            .text:00400f2e eb 0c                            jmp    0x00400f3c
+                           # 令控制循环的变量自增，然后跳转回 0x00400f17 处。
                            .text:00400f30 48 8d 5c 24 04                   lea    0x4(%rsp),%rbx ; 把【rsp加4】这个内存地址，赋值给rbx
                            .text:00400f35 48 8d 6c 24 18                   lea    0x18(%rsp),%rbp; 把【rsp+24】这个内存地址，赋值给rbp
-                           .text:00400f3a eb db                            jmp    0x00400f17     
+                           .text:00400f3a eb db                            jmp    0x00400f17
+                           # 恢复堆栈指针     
                            .text:00400f3c 48 83 c4 28                      add    $0x28,%rsp
                            .text:00400f40 5b                               pop    %rbx
                            .text:00400f41 5d                               pop    %rbp
+                           # 结束函数的执行
                            .text:00400f42 c3                               retq   
 
 .text:00400f43 <phase_3>: # 第3个炸弹的函数 答案：输入0 207这一组数字即可
