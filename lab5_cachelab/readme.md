@@ -1,6 +1,6 @@
 # Part A: cache simulator 第一部分：缓存模拟器
 # 目标
-cachelab 模拟器这部分给了一个参考程序 `csim-ref`，我们需要实现的缓存模拟器要和这个参考程序 `csim-ref` **一模一样**。
+cachelab 模拟器这部分给了一个参考程序 `csim-ref`，我们需要实现的缓存模拟器**要和参考程序 `csim-ref` 一模一样**。
 # 测试用例
 测试用例是一行 linux 命令，比如像这样：
 `linux> ./csim-ref -v -s 3 -E 2 -b 4 -t traces/example.trace`
@@ -18,4 +18,3 @@ cachelab 模拟器这部分给了一个参考程序 `csim-ref`，我们需要实
 `-t traces/example.trace`：表示指定要模拟的输入文件路径为 traces/example.trace。
 
 在执行这条命令后，`csim-ref` 会按照指定的参数模拟 CPU 缓存的工作过程，并输出模拟结果。
-The background color should be `#ffffff` for light mode and `#0d1117` for dark mode.
