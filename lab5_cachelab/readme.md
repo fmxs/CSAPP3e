@@ -1,5 +1,4 @@
-# Part A: cache simulator
-第一部分：缓存模拟器
+# Part A: cache simulator 第一部分：缓存模拟器
 # 测试用例
 测试用例有一定的格式，比如：
 
