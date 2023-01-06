@@ -1,7 +1,7 @@
 # Part A: cache simulator 第一部分：缓存模拟器
 # 目标
 cachelab 模拟器这部分给了一个参考程序 `csim-ref`，我们需要实现的缓存模拟器**要和参考程序 `csim-ref` 一模一样**。
-# 测试用例
+# 前置知识：熟悉测试用例
 测试用例是一行 linux 命令，比如像这样：
 `linux> ./csim-ref -v -s 3 -E 2 -b 4 -t traces/example.trace`
 
@@ -21,7 +21,7 @@ cachelab 模拟器这部分给了一个参考程序 `csim-ref`，我们需要实
 
 在执行这条命令后，`csim-ref` 会按照指定的参数模拟 CPU 缓存的工作过程，并输出模拟结果。
 
-# 解析测试用例
+# 1.解析输入参数
 我们使用C语言程序的入口函数`main`将测试用例中的各项参数读取到程序里，标准的`main`函数如下所示：
 ```
 int main(int argc, char *argv[])
@@ -85,3 +85,40 @@ bool print_msg;
 这时就用到了上一节的知识，比如操作符`v`就是表示开启详细输出模式，操作符's'表示设置缓存的组数，等等。
 
 在`case 'b'`中使用到了C语言函数库里的一个函数`atoi`,它能把字符串转换为一个整数。比如`atoi('5')`返回值就是int型的 `5`
+
+# 2.初始化缓存
+![image](https://user-images.githubusercontent.com/65701532/210950939-adb9e857-05ad-4306-ae0a-9725a8118bfb.png)
+
+上图是自学讲义的第17页，它提示我们3个信息：
+- 第一点，缓存就是一个由 `缓存行` 组成的二维数组，这个二维数组一共有`S`组`E`行的`缓存组`。
+- 第二点，`S = 2^s` 表示缓存的组数是 2 的 s 次方，即有 `S` 个组。
+- 第三点，`E`是每组中的行数
+
+缓存的组是一个抽象的概念，每个组中通常有一定数量的行，每行又有一定数量的块。我们用一个例子来解释组、行、块的概念。
+
+![image](https://user-images.githubusercontent.com/65701532/210953147-7c0e12e3-ff7c-4ab2-a0c1-c4a49a8751a7.png)
+
+在上图中，我们定义了一个缓存，这个缓存一共有4个组。每个组的结构都有一样数量的行，一样数量的块。这里以组1为例继续深入：
+
+![image](https://user-images.githubusercontent.com/65701532/210953992-a04abde8-55ea-44d2-90bd-86626b046526.png)
+
+在上图中，我们看到组1里一共有3行，分别叫做`cache line 1, cache line 2, cache line 3`。
+
+现在我们接着再往每个`cache line` 里看。
+
+![image](https://user-images.githubusercontent.com/65701532/210955785-73d9cf04-c730-4fd5-8d9d-c7392cfcc6ee.png)
+
+如上图，`cache line 1`中一共有4个`块`（block），分别叫做block1, block 2, block 3, block 4。
+
+例如，如果 `S = 2^s = 4`，那么这个缓存就有 `4` 个组，每个组中可能有若干行，每行又可能有若干块。
+
+每一个`cache_line`有3部分组成：
+
+- valid bit，表示合法位
+- tag，表示这个块所在的缓存行对应的内存地址
+- timestamp，表示时间戳
+
+自学讲义中提示我们使用 `malloc` 函数去给缓存动态地分配内存空间。
+
+在C语言中，如果要使用 `malloc` 函数分配二维数组，可以先分配一维数组，然后再分配每一维的内存空间。
+
