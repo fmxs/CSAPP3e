@@ -41,6 +41,9 @@ int main(int argc, char *argv[])
 因此，我们可以在main函数中写一个`for`循环，从而遍历argv数组中的参数。
 
 ```
+/// @brief 解析输入参数：解析命令行参数，获取缓存的相关参数，比如缓存的大小、缓存块的大小、缓存映射方式等。
+/// @param argc 命令行总的参数个数
+/// @param argv 保存了argc个参数，第0个参数是程序全名，之后参数是用户输入的参数。参数以空格分割开，空格不会被读取到argv数组里
 for (int i = 1; i < argc; i++)
 {
     char c[] = argv[i]; // 依次保存每个输入的参数
@@ -62,7 +65,7 @@ for (int i = 1; i < argc; i++)
             b = atoi(argv[++i]);
             break;
         case 't': // 表示指定要模拟的输入文件路径
-            t = atoi(argv[++i]);
+            strcpy(fileName, argv[++i]);
             break;
         default:
             break;
