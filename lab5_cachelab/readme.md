@@ -112,13 +112,71 @@ bool print_msg;
 
 例如，如果 `S = 2^s = 4`，那么这个缓存就有 `4` 个组，每个组中可能有若干行，每行又可能有若干块。
 
-每一个`cache_line`有3部分组成：
+每一个`cache line`有3部分组成：
 
 - valid bit，表示合法位
 - tag，表示这个块所在的缓存行对应的内存地址
 - timestamp，表示时间戳
 
+翻译成C语言的话，我们可以将`cache line`定义成一个结构体，里面存放3个变量：
+```
+/**
+ * Each	cache_line	has:
+ * § Valid	bit
+ * § Tag
+ * § LRU counter(only if you are not using a queue)
+ */
+typedef struct
+{
+    int validBit;  // 合法位
+    int tag;       // 存储缓存行对应的内存地址
+    int timeStamp; // 时间戳
+} cache_line;
+```
+
+接着再用结构体`cache_line`去定义`缓存`。**注意，讲义提示我们：缓存就是由`cache_line`组成的二维数组**。
+```
+cache_line **virtual_cache;
+```
+
 自学讲义中提示我们使用 `malloc` 函数去给缓存动态地分配内存空间。
 
 在C语言中，如果要使用 `malloc` 函数分配二维数组，可以先分配一维数组，然后再分配每一维的内存空间。
+
+```
+/// @brief 初始化缓存：根据解析到的参数，初始化缓存的结构。
+void init(int s, int E)
+{
+    int sets = 1 << s;
+    // 分配一维数组
+    virtual_cache = (cache_line **)malloc(sizeof(cache_line *) * sets);
+    if (virtual_cache == NULL)
+    {
+        printf("分配一维数组失败!");
+        return;
+    }
+    // 分配每一维的内存空间
+    for (int i = 0; i < sets; i++)
+    {
+        virtual_cache[i] = (cache_line *)malloc(sizeof(cache_line) * E);
+        if (virtual_cache[i] == NULL)
+        {
+            printf("分配第二维数组失败!");
+            return;
+        }
+    }
+}
+```
+到这里我们就成功的进行了缓存的初始化。不过别忘记malloc分配的内存还需要手动释放：
+```
+/// @brief 在使用完 malloc 分配的内存空间后，一定要记得使用 free
+void freeCache()
+{
+    int sets = 1 << s;
+    for (int i = 0; i < sets; i++)
+    {
+        free(virtual_cache[i]);
+    }
+}
+```
 
