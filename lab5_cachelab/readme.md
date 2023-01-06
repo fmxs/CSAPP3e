@@ -71,7 +71,7 @@ for (int i = 1; i < argc; i++)
     }
 }
 int s, E, b;
-string fileName;
+char fileName[];
 bool print_msg;
 ```
 代码第一行中声明了一个for循环，由于数组中第一个值是程序名称，没什么用，所以循环范围就跳过了0，从1开始，到10时就结束，这样就能遍历所有有用的参数。
