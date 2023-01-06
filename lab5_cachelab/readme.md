@@ -1,10 +1,12 @@
 # Part A: cache simulator 第一部分：缓存模拟器
+# 目标
+cachelab 模拟器这部分给了一个参考程序 csim-ref，我们需要实现的缓存模拟器要和这个参考程序 csim-ref 一模一样。
 # 测试用例
-测试用例有一定的格式，比如：
+测试用例是一行 linux 命令，比如像这样：
 
 linux> ./csim-ref -v -s 3 -E 2 -b 4 -t traces/example.trace
 
-这是一行命令，用于运行 cachelab 模拟器的参考实现 csim-ref。这个命令包含了以下参数：
+这行命令用于运行参考程序 csim-ref, 这个命令包含了以下参数：
 
 -v：表示开启详细输出模式，输出模拟过程中的详细信息。
 
