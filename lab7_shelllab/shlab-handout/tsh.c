@@ -1,7 +1,7 @@
 /* 
  * tsh - A tiny shell program with job control
  * 
- * <胥佳艳 202301281139>
+ * <fmxs 202301281139>
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -286,23 +286,13 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {
-    switch (argv[0])
-    {
-    case "quit":// 如果第一个参数为quit，就退出程序。
+    if(!strcmp(argv[0], "quit")){
         exit(0);
+    } else if (!strcmp(argv[0], "&")){
         return 1;
-    case "&":
-        return 1;
-    case "job":
-        return 1;
-    case "fg":
-        return 1;
-    case "bg":
-        return 1;
-    default:
-        break;
+    } else {
+        return 0;     /* not a builtin command */
     }
-    return 0;     /* not a builtin command */
 }
 
 /* 
@@ -310,6 +300,44 @@ int builtin_cmd(char **argv)
  */
 void do_bgfg(char **argv) 
 {
+    struct job_t *job;
+    pid_t pid;
+    int jid;
+    char *id = argv[1];
+    if(id == NULL){
+        printf("%s command requires PID or %%jobid argument\n", argv[0]);
+        return;
+    }
+    if(id[0] == '%'){
+        jid = atoi(&id[1]);
+        job = getjobjid(jobs, jid);
+        if(job == NULL){
+            printf("%%%d: no such job\n", jid);
+            return;
+        }
+    } else if (isdigit(id[0])){
+        pid = atoi(id);
+        job = getjobpid(jobs, pid);
+        if(job == NULL){
+            printf("(%d):No such process\n", pid);
+            return;
+        }
+    } else {
+        printf("%s: argument must be a PID or %%jobid\n", argv[0]);
+        return;
+    }
+
+    if(!strcmp(argv[0], "bg")){
+        job->state = BG;
+        printf("[%d] (%d) %s", job->jid, job->pid, job->cmdline);
+        kill(-job->pid, SIGCONT);
+    } else if (!strcmp(argv[0], "fg")){
+        job->state = FG;
+        kill(-job->pid, SIGCONT);
+        waitfg(job->pid);
+    } else {
+        printf("do_bgfg: Internal error\n");
+    }
     return;
 }
 
@@ -365,6 +393,11 @@ void sigchld_handler(int sig)
  */
 void sigint_handler(int sig) 
 {
+    pid_t pid = fgpid(jobs);// get the foreground job pid
+
+    if(pid != 0){
+        kill(-pid, SIGINT);// send the signal to the group in the foreground
+    }
     return;
 }
 
@@ -375,9 +408,13 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
+    pid_t pid = fgpid(jobs);// get the foreground job pid
+
+    if(pid != 0){
+        kill(-pid, SIGTSTP);// send the signal to the group in the foreground
+    }
     return;
 }
-
 /*********************
  * End signal handlers
  *********************/
